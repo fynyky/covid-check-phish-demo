@@ -1,0 +1,452 @@
+
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162557780-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-162557780-1');
+</script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.54">
+
+    <link href="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/css/jquery-confirm.v3.css" rel="stylesheet">
+    <link href="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/css/form.v18.css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/js/jquery.js"></script>
+    <script type="text/javascript" src="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/js/jquery-confirm.js"></script>
+    <script type="text/javascript" src="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!-- <div class="col-md-4"></div>
+<div class="col-md-4"> -->
+  <form id="symptom_checker_form" action="#" onsubmit="get_result();return false">
+
+    <h1>Singapore COVID-19 Symptom Checker</h1>
+    <div style='padding:0 20 20 25px; font-size:16px'>
+      This checker helps people living in Singapore decide on what your next steps should
+      be, based on the symptoms you are experiencing. This checker records participants'
+      responses but does not identify you.
+    </div>
+    <fieldset>
+
+      <div class="question-container" id="question-age">
+        <div class="radio-toolbar">
+            <div class="question">Age in years</div>
+
+            <input type="radio" id="ageless16" name="ageGroup" value="0-16" onclick="scrollUp()">
+            <label for="ageless16">16 or younger</label>
+
+            <input type="radio" id="age17to64" name="ageGroup" value="17-64" onclick="scrollUp()">
+            <label for="age17to64">17 to 64</label>
+
+            <input type="radio" id="agemore65" name="ageGroup" value=">65" onclick="scrollUp()">
+            <label for="agemore65">65 or older</label>
+        </div>
+        <div class='missed-question-text' id='age-missed'>
+          * please select an age range!
+        </div>
+      </div>
+
+      <div class="question-container" id="question-chronic">
+        <div class="radio-toolbar">
+          <div class="question">
+              Do you have any
+              <span style="border-bottom: 1px dotted; color:#27384D">chronic diseases?</span>
+              <span class="tooltip-text">Chronic Obstructive Lung Disease, Asthma, Diabetes, Hypertension, Heart Disease, Kidney Disease, etc</span>
+          </div>
+
+          <input type="radio" id="chronicNo" name="chronic" value="0" >
+          <label for="chronicNo">No</label>
+
+          <input type="radio" id="chronicYes" name="chronic" value="1">
+          <label for="chronicYes">Yes</label>
+        </div>
+        <div class='missed-question-text' id='chronic-missed'>
+          * please select Yes or No!
+        </div>
+      </div>
+
+      <div class="question-container" id="question-contact">
+        <div class="radio-toolbar">
+            <div class="question"> Have you travelled outside Singapore in the past 14 days, before the onset of any symptoms?</div>
+            <p> OR </p>
+            <div class="question">Have you been in close contact with a person who has been confirmed/suspected to have COVID-19?</div>
+            <!-- <p> OR </p>
+            <div class="question">Have you been exposed within last 14 days to a person under a <i>Stay Home Notice</i> order?</div> -->
+
+            <input type="radio" id="noContact1" name="contact1" value="0" >
+            <label for="noContact1">No</label>
+
+            <input type="radio" id="yesContact1" name="contact1" value="1">
+            <label for="yesContact1">Yes</label>
+        </div>
+        <div class='missed-question-text' id='contact-missed'>
+          * please select Yes or No!
+        </div>
+      </div>
+
+      <div class="question-container" id="question-symptoms">
+        <div class="radio-toolbar">
+            <div class="question">Do you have any of the following symptoms? (click all that apply)</div>
+
+
+            <input type="checkbox" id="shortness-of-breath" name="shortness-of-breath"  onclick="showDurationQuestion(this)" >
+            <label for="shortness-of-breath">Difficulty breathing</label>
+
+            <input type="checkbox" id="cough" name="cough" onclick="showDurationQuestion()">
+            <label for="cough">Cough</label>
+
+            <input type="checkbox" id="fever" name="fever"  onclick="showDurationQuestion()" >
+            <label for="fever">Fever over 37.5&#8451;</label>
+
+            <input type="checkbox" id="loss_taste_smell" name="loss_taste_smell"  onclick="showDurationQuestion()" >
+            <label for="loss_taste_smell">Loss of taste/smell</label>
+
+            <input type="checkbox" id="sore-throat" name="sore-throat" onclick="showDurationQuestion()">
+            <label for="sore-throat">Sore throat</label>
+
+            <input type="checkbox" id="diarrhea" name="diarrhea" onclick="showDurationQuestion()" >
+            <label for="diarrhea">Diarrhoea</label>
+
+            <input type="checkbox" id="body-ache" name="body-ache"  onclick="showDurationQuestion()" >
+            <label for="body-ache">Body ache</label>
+
+            <input type="checkbox" id="runny-nose" name="runny-nose" onclick="showDurationQuestion()" >
+            <label for="runny-nose">Runny nose</label>
+
+
+
+            <!-- <input type="text" id="other" name="other" placeholder="Other symptoms (type here)" onkeyup="showDurationQuestion()" > -->
+
+            <input type="checkbox" id="no-symptoms" name="no-symptoms" onclick="hideDurationQuestion()" >
+            <label for="no-symptoms">No symptoms</label>
+
+        </div>
+        <div class='missed-question-text' id='symptoms-missed'>
+          * please select at least one of the options!
+        </div>
+      </div>
+
+      <div class="question-container" id="question-duration">
+        <div class="radio-toolbar" id="symptom-duration" style="display:none;">
+            <div class="question">How long did you have these symptoms?</div>
+
+            <input type="radio" id="durationLess3" name="duration" value="0-4"  >
+            <label for="durationLess3">0-4 days</label>
+
+            <input type="radio" id="duration3to7" name="duration" value="5-7">
+            <label for="duration3to7">5-7 days</label>
+
+            <input type="radio" id="duration7to14" name="duration" value="8-14" >
+            <label for="duration7to14">8-14 days</label>
+
+            <input type="radio" id="durationMore14" name="duration" value=">14">
+            <label for="durationMore14">>14 days</label>
+        </div>
+        <div class='missed-question-text' id='duration-missed'>
+          * please select one of the options!
+        </div>
+      </div>
+
+      <table style="margin-left:20px; width:600px">
+        <tr>
+          <td><button type="submit" id="save" >Get recommendation</button></td>
+          <td>
+          </td>
+        </tr>
+     </table>
+
+  </form>
+  <div style="width:600px; margin-left:30px">
+
+   <a href="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/html/terms_of_use.html" target='_blank'>Terms of Use</a> and
+   <a href="https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/html/data_protection_policy.html" target='_blank'>Data Protection Policy</a>.
+   <span style='padding-left:100px;'><a href = "mailto:covid.check.fb@moht.com.sg">Send Feedback</a></span>
+  </div>
+
+<script>
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  $(document).ready(function() {
+    userID = getCookie("userID");
+      if (userID == ""){
+      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      for ( var i = 0; i < 60; i++ ) {
+          userID += characters.charAt(Math.floor(Math.random() * 60));
+      }
+      document.cookie = "userID=" + userID +"; expires=Fri, 31 Dec 2021 12:00:00 UTC";
+    }
+
+    var hospital_names = ("* National University Hospital<br>"
+                          + "* Ng Teng Fong General Hospital<br>"
+                          + "* Alexandra Hospital<br>"
+                          + "* Singapore General Hospital<br>"
+                          + "* Changi General Hospital<br>"
+                          + "* Sengkang General Hospital<br>"
+                          + "* Tan Tock Seng Hospital<br>"
+                          + "* Khoo Teck Puat Hospital<br>"
+                          + "* KK Women's and Children Hospital<br>"
+                          + "<div style='color:#AB091C; padding-top:5px; line-height:110%'>"
+                          + "Children 16 and under should preferably attend KKH or NUH."
+                          + "</div>"
+                          )
+    var message = ("If you are currently experiencing <b><u>severe symptoms</u></b> like difficulty in "
+                   + "breathing, chest pain or other concerning symptoms, call 995 or go to an "
+                   + "<span class='tooltip-container' id='initial-message'>Emergency Department"
+                   + "<span class='tooltip-text'>"+ hospital_names +"</span></span>. "
+                   + "<div class='legal_disclaimer'>By using this checker, you agree to its "
+                   + "<a href=\"https://sgcovidcheckstatic.s3-ap-southeast-1.amazonaws.com/1.0/static/html/terms_of_use.html\" target='_blank'>terms</a> "
+                   + "and that the Government of Singapore will not be liable for any harm resulting "
+                   + "from your use. <br>"
+                   + "Recommendations provided by this checker do not constitute medical advice and "
+                   + "should not be used to diagnose or treat medical conditions.</div>"
+                  )
+    $.confirm({
+        title: "<div class='confirm-title'> Important message! </div>",
+        content: "<div class='confirm-content'>" + message + "</div>",
+        columnClass: 'small',
+        draggable: true,
+        boxWidth: '600px',
+        useBootstrap: false,
+        closeIcon: false,
+        buttons : {
+          "understand" : {
+             btnClass: 'btn-blue',
+             text: "<div style='font-size:18px'>I understand</div>",
+          }
+        },
+      });
+  });
+
+  function scrollUp() {
+    window.scrollBy({
+      top: 150,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  function showDurationQuestion(btn) {
+    var any_symptom = ($('#cough').prop('checked')
+                        || $('#runny-nose').prop('checked')
+                        || $('#fever').prop('checked')
+                        || $('#loss_taste_smell').prop('checked')
+                        || $('#sore-throat').prop('checked')
+                        || $('#diarrhea').prop('checked')
+                        || $('#shortness-of-breath').prop('checked')
+                        || $('#body-ache').prop('checked')
+                        // || ($('#other').prop('value') != undefined)
+                      )
+
+    // loss of taste and smell can not be in isolation
+    var durationQuestion = document.getElementById("symptom-duration");
+    if (any_symptom) {
+      durationQuestion.style.display = "block"
+      $('#no-symptoms').prop('checked', false)
+    }
+    else {
+      durationQuestion.style.display = "none"
+      $('#no-symptoms').prop('checked', true)
+      // $('#loss_taste_smell').prop('checked', false);
+    }
+  }
+
+  function verifyOtherSymptoms() {
+    var any_other_symptom = ($('#cough').prop('checked')
+                        || $('#runny-nose').prop('checked')
+                        || $('#fever').prop('checked')
+                        || $('#sore-throat').prop('checked')
+                        || $('#diarrhea').prop('checked')
+                        || $('#shortness-of-breath').prop('checked')
+                        || $('#body-ache').prop('checked')
+                        // || ($('#other').prop('value') != undefined)
+                      )
+    var current_loss_taste_value = $('#loss_taste_smell').prop('checked')
+    if (any_other_symptom) {
+      if (!current_loss_taste_value) {
+        $('#loss_taste_smell').prop('checked', false);
+        console.log('1', any_other_symptom, current_loss_taste_value)
+      }
+      else {
+        $('#loss_taste_smell').prop('checked', true);
+        console.log('2', any_other_symptom, current_loss_taste_value)
+      }
+    }
+    else {
+      if (!current_loss_taste_value) {
+        $('#loss_taste_smell').prop('checked', false);
+        console.log('3', any_other_symptom, current_loss_taste_value)
+      }
+      else {
+        console.log('4', any_other_symptom, current_loss_taste_value)
+        var id = $('#symptoms-missed')
+        id.css({"visibility":"visible"});
+        current_html = id.html();
+        id.html('* you can not select loss of taste/smell without other symptoms!')
+        $('#loss_taste_smell').prop('checked', false);
+        setTimeout(
+            function() {
+              id.html(current_html);
+              id.css({"visibility":"hidden"});
+            },
+            2000
+          );
+      }
+    }
+  }
+
+  function hideDurationQuestion() {
+    var durationQuestion = document.getElementById("symptom-duration");
+    durationQuestion.style.display = "none"
+    $('#cough').prop('checked', false);
+    $('#runny-nose').prop('checked', false);
+    $('#loss_taste_smell').prop('checked', false);
+    $('#fever').prop('checked', false);
+    $('#sore-throat').prop('checked', false);
+    $('#diarrhea').prop('checked', false);
+    $('#shortness-of-breath').prop('checked', false);
+    $('#body-ache').prop('checked', false);
+    // $('#other').prop('value', "");
+    $('#no-symptoms').prop('checked', true);
+  }
+
+  function highlightSection(id, missed_text_id) {
+    var section = $(id);
+    section.addClass('highlight');
+    $(missed_text_id).css({"visibility":"visible"});
+    setTimeout(
+        function() {
+          section.removeClass('highlight');
+          $(missed_text_id).css({"visibility":"hidden"});
+        },
+        2000
+      );
+    }
+
+
+  function processResponse(message, extra_message) {
+    response = "<div class='confirm-content'>" + message + "</div>";
+    // button = "<button class='recommendation-button' onclick=$('.recommendation-extra-text').css({'display':'block'})>FURTHER TIPS</button>";
+    extra_tips = "<div class='recommendation-extra-text'>" + extra_message + "</div>"
+    return response + extra_tips
+
+  }
+
+  function get_result() {
+    var data = new Object();
+    data["userID"] = getCookie("userID");
+    var age = document.querySelector('input[name="ageGroup"]:checked')
+    if (age == null) {
+      highlightSection('#question-age', '#age-missed')
+      return ''
+    }
+    else {
+      data['age'] = age.value;
+    }
+
+    chronic_disease = document.querySelector('input[name="chronic"]:checked')
+    if (chronic_disease == null) {
+      highlightSection('#question-chronic', '#chronic-missed')
+      return ''
+    }
+    else {
+      data['chronic_disease'] = chronic_disease.value == '1';
+    }
+
+    contact = document.querySelector('input[name="contact1"]:checked');
+    if (contact == null) {
+      highlightSection('#question-contact', '#contact-missed')
+      return ''
+    }
+    else {
+     data['contact'] = contact.value == '1';
+    }
+
+
+    data['cough'] = $('#cough').prop('checked')
+    data['runny-nose'] = $('#runny-nose').prop('checked')
+    data['loss_taste_smell'] = $('#loss_taste_smell').prop('checked')
+    data['fever'] = $('#fever').prop('checked')
+    data['sore-throat'] = $('#sore-throat').prop('checked')
+    data['diarrhea'] = $('#diarrhea').prop('checked')
+    data['shortness-of-breath'] = $('#shortness-of-breath').prop('checked')
+    data['body-ache'] = $('#body-ache').prop('checked')
+    no_symptoms = $('#no-symptoms').prop('checked')
+    none_selected = !(data['cough'] || data['runny-nose'] || data['fever']
+                     || data['sore-throat'] || data['diarrhea']
+                     || data['loss_taste_smell']
+                     || data['shortness-of-breath'] || data['body-ache']
+                     || no_symptoms)
+    if (none_selected) {
+      highlightSection('#question-symptoms', '#symptoms-missed')
+      return ''
+    }
+
+    if (no_symptoms) {
+      data['duration'] = 'None'
+    }
+    else {
+      duration = document.querySelector('input[name="duration"]:checked')
+      if ((!none_selected) && (duration == null)) {
+        highlightSection('#question-duration', '#duration-missed')
+        return ''
+      }
+      else {
+        data['duration'] = duration.value
+      }
+    }
+
+    $.dialog({
+        closeIcon: true,
+        // lazyOpen: true,
+        title: "<div class='confirm-title'> Recommendation </div>",
+        content: function () {
+                  var self = this;
+                  return $.ajax({
+                      url: 'get_result',
+                      method: 'get',
+                      data: data
+                  }).done(function (response) {
+                    var message = response["message"];
+                    var extra_message = response["extra_message"]
+                    self.setContent(processResponse(message, extra_message));
+                  }).fail(function(){
+                      self.setContent('Something went wrong! Please try again!');
+                  });
+                },
+        columnClass: 'small',
+        draggable: true,
+        boxWidth: '600px',
+        useBootstrap: false,
+
+      });
+
+  };
+
+
+</script>
+
+
+</body>
+</html>
