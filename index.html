@@ -27,13 +27,29 @@
 <div class="col-md-4"> -->
   <form id="symptom_checker_form" action="#" onsubmit="get_result();return false">
 
-    <h1>Singapore COVID-19 Symptom Checker</h1>
+    <h1>This is a fake Singapore COVID-19 Symptom Checker. This is intended only for demo purposes. Please only trust information from official .gov.sg domains.</h1>
     <div style='padding:0 20 20 25px; font-size:16px'>
       This checker helps people living in Singapore decide on what your next steps should
       be, based on the symptoms you are experiencing. This checker records participants'
       responses but does not identify you.
     </div>
     <fieldset>
+
+
+      <div class="question-container" id="question-age">
+        <div class="radio-toolbar">
+            <div class="question">Have you been around any cats or dogs in the last 7 days (This is a fake question to demonstrate how easy it would be to spread misinformation</div>
+
+            <input type="radio" id="yes" name="animals" value="yes" onclick="scrollUp()">
+            <label for="ageless16">Yes</label>
+
+            <input type="radio" id="no" name="animals" value="no" onclick="scrollUp()">
+            <label for="agemore65">No</label>
+        </div>
+        <div class='missed-question-text' id='age-missed'>
+          * please select yes or no!
+        </div>
+      </div>
 
       <div class="question-container" id="question-age">
         <div class="radio-toolbar">
